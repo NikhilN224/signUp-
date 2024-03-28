@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <link rel="stylesheet" href="/static/style.css">
+
+  <script>
+    function validateForm() {
+      var emailInput = document.getElementById('email').value;
+      var password = document.getElementById('password').value;
+
+      var emailRegex = /^[A-Za-z\._\-[0-9]+@[A-Za-z]+\.[a-z]{2,}$/;
+      var emailErrorMessage = document.getElementById('email-error');
+      if (!emailRegex.test(emailInput)) {
+        emailErrorMessage.textContent = 'Invalid email address. Please enter a valid email.';
+        return false;
+      } else {
+        emailErrorMessage.textContent = '';
+      }
+
+      var passwordErrorMessage = document.getElementById('password-error');
+      if (password.length < 8) {
+        passwordErrorMessage.textContent = 'Password must be at least 8 characters long!';
+        return false;
+      } else {
+        passwordErrorMessage.textContent = '';
+      }
+
+      return true;
+    }
+  </script>
+
+</head>
+
+<body>
+
+  <div class="login-container">
+    <h2>Login</h2>
+    <form action="/login" method="post" onsubmit="return validateForm()">
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+      <p id="email-error" style="color: red;"></p>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+      <p id="password-error" style="color: red;"></p>
+
+      <button type="submit">Login</button>
+    </form>
+    <p>Don't have an account? <a class="link" href="/signup">SignUp</a></p>
+
+    <% if (errorMessages && errorMessages.length > 0) { %>
+      <% errorMessages.forEach(message=> { %>
+        <p style="color: red;">
+          <%= message %>
+        </p>
+        <% }); %>
+    <% } %>
+
+    <% if (successMessage) { %>
+      <p style="color: green;">
+        <%= successMessage %>
+      </p>
+    <% } %>
+  </div>
+
+</body>
+
+</html>

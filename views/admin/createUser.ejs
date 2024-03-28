@@ -1,0 +1,70 @@
+<%- include('../partials/head'); -%>
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="text-center">Add User</h3>
+        </div>
+        <div class="card-body">
+          <form action="/admin/createUser" method="post" onsubmit="return validateForm()">
+            <div class="mb-3">
+              <label for="username" class="form-label">Username:</label>
+              <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email:</label>
+              <input type="email" class="form-control" id="email" name="email" required>
+              <span id="emailError" style="color: red;"></span> <!-- Placeholder for email error message -->
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="password" name="password" required>
+              <span id="passwordError" style="color: red;"></span> <!-- Placeholder for password error message -->
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Create User</button>
+          </form>
+          <% if (errorMessages && errorMessages.length> 0) { %>
+            <% errorMessages.forEach(message=> { %>
+              <p style="color:red; margin-top: 8px;">
+                <%= message %>
+              </p>
+              <% }); %>
+                <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function validateForm() {
+    var emailInput = document.getElementById('email').value;
+    var password = document.getElementById('password').value;
+    var emailError = document.getElementById('emailError');
+    var passwordError = document.getElementById('passwordError');
+    var valid = true;
+
+    // Email validation
+    var emailRegex = /^[A-Za-z\._\-[0-9]+@[A-Za-z]+\.[a-z]{2,}$/;
+    if (!emailRegex.test(emailInput)) {
+      emailError.innerText = 'Invalid email address. Please enter a valid email.';
+      valid = false;
+    } else {
+      emailError.innerText = ''; // Clear previous error message
+    }
+
+    // Password validation
+    if (password.length < 8) {
+      passwordError.innerText = 'Password must be at least 8 characters long!';
+      valid = false;
+    } else {
+      passwordError.innerText = ''; // Clear previous error message
+    }
+
+    return valid;
+  }
+</script>
+
+<%- include('../partials/footer'); -%>

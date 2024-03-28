@@ -1,0 +1,65 @@
+<%- include('../partials/head'); -%>
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="text-center">Edit User (<%= user.name %>)</h3>
+        </div>
+        <div class="card-body">
+          <form action="/admin/update/<%= user._id %>" method="post" onsubmit="return validateForm()">
+            <div class="mb-3">
+              <label for="username" class="form-label">Username:</label>
+              <input type="text" class="form-control" id="username" name="name" value="<%= user.name %>" required>
+              <span id="usernameError" style="color: red;"></span> <!-- Placeholder for username error message -->
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email:</label>
+              <input type="email" class="form-control" id="email" name="email" value="<%= user.email %>" required>
+              <span id="emailError" style="color: red;"></span> <!-- Placeholder for email error message -->
+            </div>
+            <div class="mb-3">
+              <label for="isAdmin" class="form-label">isAdmin:</label>
+              <div class="is-admin-radio-group">
+                <input type="radio" id="isAdminTrue" name="isAdmin" value="true" <%= user.is_admin ? 'checked' : '' %> required>
+                <label for="isAdminTrue">True</label>
+                <input type="radio" id="isAdminFalse" name="isAdmin" value="false" <%= !user.is_admin ? 'checked' : '' %> required>
+                <label for="isAdminFalse">False</label>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Update User</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function validateForm() {
+    var username = document.getElementById('username').value;
+    var email = document.getElementById('email').value;
+
+    // Username validation
+    if (username.length === 0) {
+      document.getElementById('usernameError').innerText = 'Username cannot be empty.';
+      return false;
+    } else {
+      document.getElementById('usernameError').innerText = '';
+    }
+
+    // Email validation
+    var emailRegex = /^[A-Za-z\._\-[0-9]+@[A-Za-z]+\.[a-z]{2,}$/;
+    if (!emailRegex.test(email)) {
+      document.getElementById('emailError').innerText = 'Invalid email address. Please enter a valid email.';
+      return false;
+    } else {
+      document.getElementById('emailError').innerText = '';
+    }
+
+    return true;
+  }
+</script>
+
+<%- include('../partials/footer'); -%>

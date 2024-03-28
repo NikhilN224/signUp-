@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SignUp Page</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script>
+    function validateForm() {
+      var username = document.getElementById('username').value;
+      var emailInput = document.getElementById('email').value;
+      var password = document.getElementById('password').value;
+      var confirmPassword = document.getElementById('confirm-password').value;
+
+      var usernameError = document.getElementById('username-error');
+      var emailError = document.getElementById('email-error');
+      var passwordError = document.getElementById('password-error');
+
+      // Username validation
+      var usernameRegex = /^[a-zA-Z0-9_]{3,20}$/; // Allows letters, numbers, and underscores. Length between 3 and 20 characters.
+      if (!usernameRegex.test(username)) {
+        usernameError.textContent = 'Invalid username. Please enter a username between 3 and 20 characters containing only letters, numbers, and underscores.';
+        return false;
+      } else {
+        usernameError.textContent = '';
+      }
+
+      // Email validation
+      var emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+      if (!emailRegex.test(emailInput)) {
+        emailError.textContent = 'Invalid email address. Please enter a valid email.';
+        return false;
+      } else {
+        emailError.textContent = '';
+      }
+
+      // Password validation
+      if (password !== confirmPassword) {
+        passwordError.textContent = 'Passwords do not match!';
+        return false;
+      } else {
+        passwordError.textContent = '';
+      }
+
+      if (password.length < 8) {
+        passwordError.textContent = 'Password should be at least 8 characters long!';
+        return false;
+      } else {
+        passwordError.textContent = '';
+      }
+
+      // If all validations pass, return true for form submission
+      return true;
+    }
+
+  </script>
+</head>
+
+<body>
+
+
+  <div class="login-container">
+    <h2>Sign Up</h2>
+    <form action="/signup" method="post" onsubmit="return validateForm()">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required>
+      <p id="username-error" style="color: red;"></p>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+      <p id="email-error" style="color: red;"></p>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+      <p id="password-error" style="color: red;"></p>
+
+      <label for="confirm-password">Confirm Password:</label>
+      <input type="password" id="confirm-password" name="confirm-password" required>
+
+      <button type="submit">Sign Up</button>
+    </form>
+    <p>Already have an account? <a href="/">Login</a></p>
+
+    <% if (typeof errorMessages !=='undefined' && errorMessages.length> 0) {
+      %>
+      <% errorMessages.forEach(message=> { %>
+        <p style="color:red;">
+          <%= message %>
+        </p>
+        <% }); %>
+          <% } %>
+
+  </div>
+
+</body>
+
+</html>
